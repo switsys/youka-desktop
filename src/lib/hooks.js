@@ -1,7 +1,6 @@
 import ua from "universal-analytics";
 import { useEffect } from "react";
 import { v4 as uuid4 } from "uuid";
-import { version } from "../../package.json";
 import config from "../config";
 import store from "./store";
 
@@ -11,16 +10,16 @@ export const visitor = ua(config.ua, user);
 
 store.set("user", user);
 
-export function useScreenView(screenName) {
-  // if (!stats) return;
+export function usePageView(path) {
+  if (!stats) return;
 
   useEffect(() => {
-    visitor.screenview(screenName, "Youka", version).send();
-  }, [screenName]);
+    visitor.pageview(path).send();
+  }, [path]);
 }
 
 export function useEvent(category, action, label) {
-  // if (!stats) return;
+  if (!stats) return;
 
   useEffect(() => {
     visitor.event(category, action, label).send();
