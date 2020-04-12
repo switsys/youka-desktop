@@ -8,6 +8,7 @@ import Player from "../comps/Player";
 import Radio from "../comps/Radio";
 import ReportButton from "../comps/ReportButton";
 import { useEvent } from "../lib/hooks";
+import rollbar from "../lib/rollbar";
 
 const { shell } = require("electron");
 
@@ -50,7 +51,7 @@ export default function WatchPage() {
   }
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       try {
         window.scrollTo({ top: 0, behavior: "smooth" });
         setError(null);
@@ -66,6 +67,7 @@ export default function WatchPage() {
       } catch (error) {
         setError(error.toString());
         setProgress(false);
+        rollbar.error(error);
       }
     })();
   }, [youtubeID, defaultVideo, defaultCaptions]);

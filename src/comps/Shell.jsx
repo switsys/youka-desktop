@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Input, Loader } from "semantic-ui-react";
 import VideoList from "./VideoList";
 import * as mess from "../lib/mess";
+import rollbar from "../lib/rollbar";
 
 const { shell } = require("electron");
 
@@ -71,6 +72,7 @@ export default function Shell({ children, youtubeID, defaultPlaylist }) {
     } catch (error) {
       console.error(error);
       setVideos([]);
+      rollbar.error(error);
     } finally {
       setLoading(false);
     }
@@ -86,6 +88,7 @@ export default function Shell({ children, youtubeID, defaultPlaylist }) {
     } catch (error) {
       console.error(error);
       setVideos([]);
+      rollbar.error(error);
     } finally {
       setLoading(false);
     }
@@ -100,6 +103,7 @@ export default function Shell({ children, youtubeID, defaultPlaylist }) {
     } catch (error) {
       console.error(error);
       setVideos([]);
+      rollbar.error(error);
     } finally {
       setLoading(false);
     }
@@ -119,11 +123,12 @@ export default function Shell({ children, youtubeID, defaultPlaylist }) {
     try {
       setLoading(true);
       const results = await search_memoize(query);
-      const filteredResults = results.filter(r => !r.hours && r.minutes < 10);
+      const filteredResults = results.filter((r) => !r.hours && r.minutes < 10);
       setVideos(filteredResults);
     } catch (error) {
       console.error(error);
       setVideos([]);
+      rollbar.error(error);
     } finally {
       setLoading(false);
     }
@@ -166,7 +171,7 @@ export default function Shell({ children, youtubeID, defaultPlaylist }) {
         </div>
         <div
           style={{
-            color: playlist === PLAYLIST_TRENDING ? "#E30B17" : "black"
+            color: playlist === PLAYLIST_TRENDING ? "#E30B17" : "black",
           }}
           className="p-4 text-xl cursor-pointer"
           onClick={handleTrending}

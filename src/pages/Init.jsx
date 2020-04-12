@@ -3,6 +3,7 @@ import { Message, Dimmer, Loader } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { downloadFfpmeg } from "../lib/mess";
 import store from "../lib/store";
+import rollbar from "../lib/rollbar";
 
 export default function InitPage() {
   let history = useHistory();
@@ -16,6 +17,7 @@ export default function InitPage() {
         history.push("/");
       } catch (error) {
         setError(error.toString());
+        rollbar.error(error);
       }
     })();
   }, [history]);
