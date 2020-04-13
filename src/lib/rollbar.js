@@ -11,6 +11,7 @@ module.exports = new Rollbar({
       javascript: {
         source_map_enabled: true,
         code_version: process.env.REACT_APP_GIT_SHA,
+        guess_uncaught_frames: true,
       },
     },
   },

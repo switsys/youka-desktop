@@ -13,6 +13,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
+    "sync": "aws --profile youka s3 sync --delete build s3://$YOUKA_BUCKET",
     "lint": "",
     "test": "craco test"
   },
