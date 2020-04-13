@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Message, Dimmer, Loader } from "semantic-ui-react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { downloadFfpmeg } from "../lib/mess";
 import store from "../lib/store";
 import rollbar from "../lib/rollbar";
+import { usePageView } from "../lib/hooks";
 
 export default function InitPage() {
+  const location = useLocation();
+  usePageView(location.pathname);
+
   let history = useHistory();
   const [error, setError] = useState();
 

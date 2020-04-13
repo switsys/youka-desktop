@@ -6,6 +6,7 @@ import { Input, Loader } from "semantic-ui-react";
 import VideoList from "./VideoList";
 import * as mess from "../lib/mess";
 import rollbar from "../lib/rollbar";
+import { visitor } from "../lib/ua";
 
 const { shell } = require("electron");
 
@@ -30,6 +31,8 @@ export default function Shell({ children, youtubeID, defaultPlaylist }) {
   }, []);
 
   function handlePlaylistChange(pl) {
+    visitor.event("Click", "Change Playlist", pl).send();
+
     switch (pl) {
       case PLAYLIST_SEARCH:
         handleSearch();
@@ -49,6 +52,7 @@ export default function Shell({ children, youtubeID, defaultPlaylist }) {
   }
 
   function handleClickDonate() {
+    visitor.event("Click", "Donate").send();
     shell.openExternal("https://www.patreon.com/getyouka");
   }
 
@@ -157,7 +161,7 @@ export default function Shell({ children, youtubeID, defaultPlaylist }) {
           className="self-center text-white text-right font-bold cursor-pointer flex-1"
           onClick={handleClickDonate}
         >
-          Help keep Youka alive
+          Donate
         </div>
       </div>
       {children}

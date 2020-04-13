@@ -9,7 +9,7 @@
   "homepage": "https://app.youka.club",
   "scripts": {
     "start": "concurrently \"BROWSER=none craco start\" \"YOUKA_APP_URL=http://localhost:3000 electron src/main.js\"",
-    "build": "craco build",
+    "build": "REACT_APP_GIT_SHA=`git rev-parse HEAD` craco build",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { Message, Icon, Button } from "semantic-ui-react";
 import { utils } from "@youka/youtube";
 import * as mess from "../lib/mess";
@@ -7,14 +7,16 @@ import Shell, { PLAYLIST_MIX } from "../comps/Shell";
 import Player from "../comps/Player";
 import Radio from "../comps/Radio";
 import ReportButton from "../comps/ReportButton";
-import { useEvent } from "../lib/hooks";
+import { usePageView } from "../lib/hooks";
+import { visitor } from "../lib/ua";
 import rollbar from "../lib/rollbar";
-
 const { shell } = require("electron");
 
 export default function WatchPage() {
+  const location = useLocation();
+  usePageView(location.pathname);
+
   const { youtubeID } = useParams();
-  useEvent("Watch", "Click", youtubeID);
 
   const defaultVideo = mess.MODE_MEDIA_INSTRUMENTS;
   const defaultCaptions = mess.MODE_CAPTIONS_LINE;
@@ -30,10 +32,12 @@ export default function WatchPage() {
   function handleClickDownload() {
     const fpath = mess.filepath(youtubeID, videoMode, mess.FILE_VIDEO);
     shell.showItemInFolder(fpath);
+    visitor.event("Click", "Download", youtubeID).send();
   }
 
   function handleChangeVideo(e, data) {
     changeVideo(data.value);
+    visitor.event("Click", "Change Video", youtubeID).send();
   }
 
   function changeVideo(mode, modes) {
@@ -115,8 +119,8 @@ export default function WatchPage() {
               <div>
                 <Button onClick={handleClickDownload}>Download</Button>
                 <ReportButton
-                  category="report"
-                  action="report captions"
+                  category="Click"
+                  action="Report out of sync"
                   label={youtubeID}
                 >
                   Report out of sync
